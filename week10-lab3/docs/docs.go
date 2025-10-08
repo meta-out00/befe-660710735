@@ -54,6 +54,13 @@ const docTemplate = `{
                 "summary": "Create book",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "Book ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "description": "Book data",
                         "name": "book",
                         "in": "body",
@@ -115,9 +122,6 @@ const docTemplate = `{
             },
             "put": {
                 "description": "Update a book by ID",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -126,6 +130,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update book by ID",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Book ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Updated book data",
                         "name": "book",

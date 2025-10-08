@@ -53,6 +53,11 @@ paths:
     post:
       description: Create details of a book
       parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
       - description: Book data
         in: body
         name: book
@@ -121,10 +126,13 @@ paths:
       tags:
       - Books
     put:
-      consumes:
-      - application/json
       description: Update a book by ID
       parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
       - description: Updated book data
         in: body
         name: book

@@ -150,6 +150,7 @@ func getBook(c *gin.Context) {
 // @Description Create details of a book 
 // @Tags Books
 // @Produce  json
+// @Param   id   path      int     true  "Book ID"
 // @Param   book  body  Book  true  "Book data"
 // @Success 200  {object}  Book
 // @Failure 404  {object}  ErrorResponse
@@ -189,7 +190,7 @@ func createBook(c *gin.Context) {
 // @Description Update a book by ID
 // @Tags Books
 // @Produce  json
-// @Accept json
+// @Param   id   path      int     true  "Book ID"
 // @Param   book  body  Book  true  "Updated book data"
 // @Success 200  {object}  Book
 // @Failure 404  {object}  ErrorResponse
