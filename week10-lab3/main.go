@@ -118,6 +118,58 @@ func getAllBooks(c *gin.Context) {
 	c.JSON(http.StatusOK, books)
 }
 
+// @Summary     Get new books
+// @Description Get latest books ordered by created date
+// @Tags        Books
+// @Accept      json
+// @Produce     json
+// @Param       limit  query    int  false  "Number of books to return (default 5)"
+// @Success     200   {array}   Book
+// @Failure     500   {object}  ErrorResponse
+// @Router      /books/new [get]
+func getNewBooks(c *gin.Context) {
+
+    rows, err := db.Query(`
+        SELECT id, title, author, isbn, year, price, created_at, updated_at 
+        FROM books 
+        ORDER BY created_at DESC 
+        LIMIT 5
+    `)
+
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    defer rows.Close()
+
+    var books []Book
+    for rows.Next() {
+        var book Book
+        err := rows.Scan(
+            &book.ID, 
+            &book.Title, 
+            &book.Author, 
+            &book.ISBN, 
+            &book.Year, 
+            &book.Price, 
+            &book.CreatedAt, 
+            &book.UpdatedAt,
+        )
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+            return
+        }
+        books = append(books, book)
+    }
+
+    if books == nil {
+        books = []Book{}
+    }
+
+    c.JSON(http.StatusOK, books)
+}
+
+
 
 // @Summary Get book by ID
 // @Description Get details of a book by ID
@@ -289,6 +341,7 @@ func main () {
 	 api := r.Group("/api/v1")
 	 {
 	 	api.GET("/books", getAllBooks)
+        api.GET("/books/new", getNewBooks)
 	 	api.GET("/books/:id", getBook)
 	 	api.POST("/books", createBook)
 	 	api.PUT("/books/:id", updateBook)
